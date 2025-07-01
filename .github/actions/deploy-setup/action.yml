@@ -32,7 +32,7 @@ runs:
         project_id: ${{ env.GCP_PROJECT_ID }}
         workload_identity_provider: ${{ env.GH_WORKLOAD_IDENTITY_PROVIDER }}
         service_account: ${{ env.SERVICE_ACCOUNT }}
-
+        debug_logs: true
     - name: Debug - Verify GCP Auth
       run: |
         echo "Current active account:"
