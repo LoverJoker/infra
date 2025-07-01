@@ -33,8 +33,29 @@ runs:
         workload_identity_provider: ${{ env.GH_WORKLOAD_IDENTITY_PROVIDER }}
         service_account: ${{ env.SERVICE_ACCOUNT }}
 
+    - name: Debug - Verify GCP Auth
+      run: |
+        echo "Current active account:"
+        gcloud auth list
+        echo "Project configuration:"
+        gcloud config list
+        echo "Testing storage permissions:"
+        gsutil ls gs://${TERRAFORM_STATE_BUCKET} || echo "Bucket access failed"
+      shell: bash
+
     - name: Set up Cloud SDK
       uses: google-github-actions/setup-gcloud@v2
+
+    - name: Debug - Verify gcloud credentials
+      run: |
+        echo "Current authenticated identity:"
+        gcloud auth list
+        echo "Service account permissions:"
+        gcloud projects get-iam-policy $GCP_PROJECT_ID \
+          --flatten="bindings[].members" \
+          --format="table(bindings.role)" \
+          --filter="bindings.members:${SERVICE_ACCOUNT}"
+      shell: bash
 
     - name: Set up Docker
       env:
