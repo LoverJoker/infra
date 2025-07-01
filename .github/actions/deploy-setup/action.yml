@@ -32,10 +32,10 @@ runs:
         project_id: ${{ env.GCP_PROJECT_ID }}
         workload_identity_provider: ${{ env.GH_WORKLOAD_IDENTITY_PROVIDER }}
         service_account: ${{ env.SERVICE_ACCOUNT }}
-        debug_logs: true
+
     - name: Debug - Verify GCP Auth
       run: |
-        echo "Current active account:"
+          echo "Current active account:"
         gcloud auth list
         echo "Project configuration:"
         gcloud config list
@@ -73,7 +73,19 @@ runs:
       uses: hashicorp/setup-terraform@v3
       with:
         terraform_version: 1.5.7
+      
+    - name: Debug - Confirm Terraform Identity
+      run: |
+        echo "== gcloud auth list =="
+        gcloud auth list
 
+        echo "== gcloud config list =="
+        gcloud config list
+
+        echo "== gcloud auth describe =="
+        gcloud auth describe
+      shell: bash
+      
     - name: Terraform init
       run: |
         terraform init -input=false -reconfigure -backend-config="bucket=${TERRAFORM_STATE_BUCKET}"
