@@ -11,6 +11,10 @@ inputs:
 runs:
   using: "composite"
   steps:
+    - name: DEBUG MARKER - Entered deploy-setup
+      run: echo "🎯 Entered deploy-setup composite action"
+      shell: bash
+
     - name: Load Environment Variables
       id: load-env
       env:
@@ -35,7 +39,7 @@ runs:
 
     - name: Debug - Verify GCP Auth
       run: |
-          echo "Current active account:"
+        echo "Current active account:"
         gcloud auth list
         echo "Project configuration:"
         gcloud config list
@@ -73,7 +77,7 @@ runs:
       uses: hashicorp/setup-terraform@v3
       with:
         terraform_version: 1.5.7
-      
+
     - name: Debug - Confirm Terraform Identity
       run: |
         echo "== gcloud auth list =="
@@ -85,7 +89,7 @@ runs:
         echo "== gcloud auth describe =="
         gcloud auth describe
       shell: bash
-      
+
     - name: Terraform init
       run: |
         terraform init -input=false -reconfigure -backend-config="bucket=${TERRAFORM_STATE_BUCKET}"
