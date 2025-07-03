@@ -45,7 +45,9 @@ runs:
         gcloud config list
         echo "----- Current caller -----"
         gcloud auth print-identity-token
+      shell: bash
     
+
     - name: Debug - Verify GCP Auth
       run: |
         echo "Current active account:"
