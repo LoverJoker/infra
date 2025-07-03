@@ -41,6 +41,8 @@ runs:
       env:
         GCP_REGION: ${{ env.GCP_REGION }}
       run: |
+        echo "inputs.SERVICE_ACCOUNT=${{ env.SERVICE_ACCOUNT }}"
+        echo "inputs.GH_WORKLOAD_IDENTITY_PROVIDER=${{ env.GH_WORKLOAD_IDENTITY_PROVIDER }}"
         gcloud auth configure-docker "${GCP_REGION}-docker.pkg.dev" --quiet
         export ACCESS_TOKEN=$(gcloud auth print-access-token)
         export DOCKER_AUTH_BASE64=$(echo -n "{\"username\":\"oauth2accesstoken\",\"password\":\"$ACCESS_TOKEN\"}" | base64 -w 0)
