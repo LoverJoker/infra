@@ -37,6 +37,15 @@ runs:
         workload_identity_provider: ${{ env.GH_WORKLOAD_IDENTITY_PROVIDER }}
         service_account: ${{ env.SERVICE_ACCOUNT }}
 
+    - name: Debug GCP Identity
+      run: |
+        echo "----- gcloud auth list -----"
+        gcloud auth list
+        echo "----- gcloud config list -----"
+        gcloud config list
+        echo "----- Current caller -----"
+        gcloud auth print-identity-token
+    
     - name: Debug - Verify GCP Auth
       run: |
         echo "Current active account:"
