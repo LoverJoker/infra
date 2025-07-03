@@ -31,7 +31,8 @@ runs:
       with:
         project_id: ${{ env.GCP_PROJECT_ID }}
         workload_identity_provider: ${{ env.GH_WORKLOAD_IDENTITY_PROVIDER }}
-
+        service_account: ${{ env.SERVICE_ACCOUNT }}
+        
     - name: Set up Cloud SDK
       uses: google-github-actions/setup-gcloud@v2
 
