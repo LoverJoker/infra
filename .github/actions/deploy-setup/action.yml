@@ -16,6 +16,7 @@ runs:
       env:
         ENV_CONFIG: ${{ inputs.env_vars }}
       run: |
+        echo "inputs.environment=${{ inputs.environment }}"
         echo ${{ inputs.environment }} > .last_used_env
         echo "$ENV_CONFIG" | base64 -d > ".env.${{ inputs.environment }}"
         export $(cat ".env.${{ inputs.environment }}" | xargs)
