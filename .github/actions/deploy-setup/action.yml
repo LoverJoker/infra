@@ -11,10 +11,6 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - name: DEBUG MARKER - Entered deploy-setup
-      run: echo "🎯 Entered deploy-setup composite action"
-      shell: bash
-
     - name: Load Environment Variables
       id: load-env
       env:
@@ -35,22 +31,9 @@ runs:
       with:
         project_id: ${{ env.GCP_PROJECT_ID }}
         workload_identity_provider: ${{ env.GH_WORKLOAD_IDENTITY_PROVIDER }}
-        service_account: ${{ env.SERVICE_ACCOUNT }}
-
 
     - name: Set up Cloud SDK
       uses: google-github-actions/setup-gcloud@v2
-
-    - name: Debug - Verify gcloud credentials
-      run: |
-        echo "Current authenticated identity:"
-        gcloud auth list
-        echo "Service account permissions:"
-        gcloud projects get-iam-policy $GCP_PROJECT_ID \
-          --flatten="bindings[].members" \
-          --format="table(bindings.role)" \
-          --filter="bindings.members:${SERVICE_ACCOUNT}"
-      shell: bash
 
     - name: Set up Docker
       env:
@@ -68,18 +51,6 @@ runs:
       uses: hashicorp/setup-terraform@v3
       with:
         terraform_version: 1.5.7
-
-    - name: Debug - Confirm Terraform Identity
-      run: |
-        echo "== gcloud auth list =="
-        gcloud auth list
-
-        echo "== gcloud config list =="
-        gcloud config list
-
-        echo "== gcloud auth describe =="
-        gcloud auth describe
-      shell: bash
 
     - name: Terraform init
       run: |
